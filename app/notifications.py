@@ -7,12 +7,29 @@ from data.config import config, t
 
 
 class NotificationManager:
+    """Class responsible for sending various types of notifications to configured channels."""
+
     @staticmethod
     async def send_message(app: Client, message: str) -> None:
+        """
+        Send a message to the configured notification channel.
+        
+        Args:
+            app (Client): Telegram client instance
+            message (str): Message to send
+        """
         config.CHANNEL_ID and await app.send_message(config.CHANNEL_ID, message, disable_web_page_preview=True)
 
     @staticmethod
     async def send_notification(app: Client, gift_id: int, **kwargs) -> None:
+        """
+        Send a notification about gift-related events.
+        
+        Args:
+            app (Client): Telegram client instance
+            gift_id (int): ID of the gift
+            **kwargs: Additional notification parameters
+        """
         total_gifts = kwargs.get('total_gifts', 1)
         supply_text = f" | {t('telegram.available')}: {kwargs.get('total_amount')}" if kwargs.get('total_amount',
                                                                                                   0) > 0 else ""
@@ -43,6 +60,13 @@ class NotificationManager:
 
     @staticmethod
     async def _send_with_error_handling(app: Client, message: str) -> None:
+        """
+        Send a message with error handling.
+        
+        Args:
+            app (Client): Telegram client instance
+            message (str): Message to send
+        """
         try:
             await NotificationManager.send_message(app, message)
         except RPCError as ex:
@@ -50,6 +74,12 @@ class NotificationManager:
 
     @staticmethod
     async def send_start_message(client: Client) -> None:
+        """
+        Send initial startup message with configuration information.
+        
+        Args:
+            client (Client): Telegram client instance
+        """
         balance = await get_user_balance(client)
         ranges_text = "\n".join([
             f"• {r['min_price']}-{r['max_price']} ⭐ (supply ≤ {r['supply_limit']}) x{r['quantity']} -> {len(r['recipients'])} recipients"
@@ -66,7 +96,15 @@ class NotificationManager:
     @staticmethod
     async def send_summary_message(app: Client, sold_out_count: int = 0,
                                    non_limited_count: int = 0, non_upgradable_count: int = 0) -> None:
-
+        """
+        Send a summary message about skipped gifts.
+        
+        Args:
+            app (Client): Telegram client instance
+            sold_out_count (int, optional): Number of sold out gifts. Defaults to 0
+            non_limited_count (int, optional): Number of non-limited gifts. Defaults to 0
+            non_upgradable_count (int, optional): Number of non-upgradable gifts. Defaults to 0
+        """
         skip_types = {
             'sold_out_item': sold_out_count,
             'non_limited_item': non_limited_count,

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  gifts-buyer:
+    build: .
+    container_name: gifts-buyer
+    volumes:
+      - ./config.ini:/app/config.ini
+      - ./data:/app/data
+      - ./locales:/app/locales
+    environment:
+      - TZ=UTC
+    restart: unless-stopped

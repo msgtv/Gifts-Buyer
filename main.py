@@ -14,8 +14,14 @@ app_info = get_app_info()
 
 
 class Application:
+    """Main application class that handles the initialization and execution of the Gifts Buyer bot."""
+
     @staticmethod
     async def run() -> None:
+        """
+        Initializes and runs the main application loop.
+        Sets up the window title, displays the banner, and starts the Telegram client.
+        """
         set_window_title(app_info)
         display_title(app_info, get_language_display(config.LANGUAGE))
 
@@ -30,6 +36,10 @@ class Application:
 
     @staticmethod
     def main() -> None:
+        """
+        Entry point of the application.
+        Handles the main execution loop and error handling.
+        """
         try:
             asyncio.run(Application.run())
         except KeyboardInterrupt:
@@ -39,4 +49,5 @@ class Application:
             traceback.print_exc()
 
 
-Application.main() if __name__ == "__main__" else None
+if __name__ == "__main__":
+    Application.main() 

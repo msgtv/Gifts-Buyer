@@ -4,8 +4,19 @@ from pyrogram import Client
 
 
 class UserHelper:
+    """Helper class for user-related operations like getting balance and recipient information."""
+
     @staticmethod
     async def get_user_balance(client: Client) -> int:
+        """
+        Get the current star balance of the user.
+        
+        Args:
+            client (Client): Telegram client instance
+            
+        Returns:
+            int: Current star balance, or 0 if unable to fetch
+        """
         try:
             return await client.get_stars_balance()
         except Exception:
@@ -13,6 +24,16 @@ class UserHelper:
 
     @staticmethod
     async def get_recipient_info(app: Client, chat_id: int) -> Tuple[str, str]:
+        """
+        Get recipient's information including formatted reference and username.
+        
+        Args:
+            app (Client): Telegram client instance
+            chat_id (int): Chat ID of the recipient
+            
+        Returns:
+            Tuple[str, str]: Tuple containing formatted recipient reference and username
+        """
         try:
             user = await app.get_chat(chat_id)
             username = user.username or ""

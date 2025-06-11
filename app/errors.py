@@ -9,8 +9,16 @@ from data.config import t
 
 
 class ErrorHandler:
+    """Class responsible for handling and processing various gift-related errors."""
+
     @staticmethod
     def get_error_handlers() -> Dict[str, Dict[str, Any]]:
+        """
+        Get dictionary of error handlers for different error types.
+        
+        Returns:
+            Dict[str, Dict[str, Any]]: Dictionary mapping error types to their handlers
+        """
         return {
             'BALANCE_TOO_LOW': {
                 'check': lambda e: 'BALANCE_TOO_LOW' in str(e),
@@ -32,6 +40,17 @@ class ErrorHandler:
     @staticmethod
     async def handle_gift_error(app: Client, ex: RPCError, gift_id: int, chat_id: int,
                                 gift_price: int = 0, current_balance: int = 0) -> None:
+        """
+        Handle gift-related errors and send appropriate notifications.
+        
+        Args:
+            app (Client): Telegram client instance
+            ex (RPCError): Error that occurred
+            gift_id (int): ID of the gift
+            chat_id (int): Chat ID where error occurred
+            gift_price (int, optional): Price of the gift. Defaults to 0
+            current_balance (int, optional): Current user balance. Defaults to 0
+        """
         error_handlers = ErrorHandler.get_error_handlers()
 
         notification_data = {
@@ -51,6 +70,15 @@ class ErrorHandler:
     @staticmethod
     async def _process_error(app: Client, gift_id: int,
                              handler: Dict[str, Any], notification_data: Dict[str, Dict]) -> None:
+        """
+        Process a specific error using its handler.
+        
+        Args:
+            app (Client): Telegram client instance
+            gift_id (int): ID of the gift
+            handler (Dict[str, Any]): Error handler configuration
+            notification_data (Dict[str, Dict]): Notification data for different error types
+        """
         handler['log_message'] and (
             error(t("console.low_balance", gift_id=gift_id)) if handler['log_message'] == 'low_balance'
             else error(handler['log_message'])

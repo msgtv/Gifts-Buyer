@@ -8,3 +8,4 @@ venv/
 .idea/
 data/account.session
 config.ini
+data/json/history.json
