@@ -86,11 +86,15 @@ class NotificationManager:
             for r in config.GIFT_RANGES
         ])
 
-        message = t("telegram.start_message",
-                    language=config.language_display,
-                    locale=config.LANGUAGE,
-                    balance=balance,
-                    ranges=ranges_text)
+        message = t(
+            "telegram.start_message",
+            language=config.language_display,
+            locale=config.LANGUAGE,
+            balance=balance,
+            ranges=ranges_text,
+            check_interval=config.INTERVAL,
+        )
+
         await NotificationManager.send_message(client, message)
 
     @staticmethod

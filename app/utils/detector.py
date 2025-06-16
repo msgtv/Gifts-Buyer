@@ -6,12 +6,12 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 from pyrogram import Client, types
 
 from app.notifications import send_summary_message
-from app.utils.logger import log_same_line, info
+from app.utils.logger import info
 from data.config import config, t
 
 
 # Animation constants
-ANIMATION_FRAMES = 4
+ANIMATION_FRAMES = 5
 ANIMATION_DELAY = 0.2
 
 
@@ -162,8 +162,8 @@ class GiftMonitor:
 
         while True:
             # Update loading animation
-            animation_counter = (animation_counter + 1) % ANIMATION_FRAMES
-            log_same_line(f'{t("console.gift_checking")}{"." * animation_counter}')
+            animation_counter = (animation_counter + 1) % ANIMATION_FRAMES or 1
+            info(f'{t("console.gift_checking")}{"." * animation_counter}')
             time.sleep(ANIMATION_DELAY)
 
             # Ensure connection is active

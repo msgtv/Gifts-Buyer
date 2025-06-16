@@ -5,7 +5,7 @@ from pyrogram import Client
 
 from app.core.banner import display_title, get_app_info, set_window_title
 from app.core.callbacks import new_callback
-from app.notifications import send_start_message
+from app.notifications import send_start_message, send_message
 from app.utils.detector import detector
 from app.utils.logger import info, error
 from data.config import config, t, get_language_display
@@ -31,8 +31,20 @@ class Application:
                 api_hash=config.API_HASH,
                 phone_number=config.PHONE_NUMBER
         ) as client:
-            await send_start_message(client)
-            await detector(client, new_callback)
+            try:
+                await send_start_message(client)
+                await detector(client, new_callback)
+            except Exception as err:
+                await send_message(
+                    client,
+                    t(
+                        "telegram.unexpected_error",
+                        exception_name=err.__class__.__name__,
+                        exception_message=err,
+                    )
+                )
+            finally:
+                await send_message(client, t("telegram.terminated"))
 
     @staticmethod
     def main() -> None:

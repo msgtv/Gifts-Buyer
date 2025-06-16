@@ -12,6 +12,8 @@ telegram:
 
     <b>Selected language:</b> <code>%{language}</code>
     <b>Your current balance:</b> <code>%{balance} ⭐</code>
+    <b>Interval between checking for new gifts:</b> <code>%{check_interval} sec.</code>
+
 
     <b>📝 Gift purchase logic:</b>
     <blockquote>According to your configured ranges:
@@ -36,6 +38,9 @@ telegram:
   non_limited_item: "• <b>%{count}</b> non-limited gifts skipped"
   non_upgradable_item: "• <b>%{count}</b> non-upgradable gifts skipped"
   available: "Available"
+  terminated: "Program terminated"
+  unexpected_error: "<b>An unexpected error occurred!</b>\n\n<b>%{exception_name}:</b> <pre>%{exception_message}</pre>"
+
 
 console:
   low_balance: "Insufficient stars balance to send gift [%{gift_id}]!"
