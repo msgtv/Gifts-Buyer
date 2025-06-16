@@ -8,4 +8,4 @@ services:
       - ./locales:/app/locales
     environment:
       - TZ=UTC
-    restart: unless-stopped
+    restart: on-failure:3
